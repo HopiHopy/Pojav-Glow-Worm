@@ -163,13 +163,11 @@ public final class Tools {
      * @param context context to get the storage root if it's not set yet
      * @return true if storage is fine, false if storage is not accessible
      */
-/*
-    public static boolean checkStorageRoot(Context context) {
+    /*public static boolean checkStorageRoot(Context context) {
         File externalFilesDir = DIR_GAME_HOME  == null ? Tools.getPojavStorageRoot(context) : new File(DIR_GAME_HOME);
         //externalFilesDir == null when the storage is not mounted if it was obtained with the context call
         return externalFilesDir != null && Environment.getExternalStorageState(externalFilesDir).equals(Environment.MEDIA_MOUNTED);
-    }
-*/
+    }*/
 
     /**
      * Since some constant requires the use of the Context object
@@ -180,13 +178,13 @@ public final class Tools {
         switch (LOCAL_CSTL) {
             case "1":{
                 if(SDK_INT >= 29) {
-                    DIR_GAME_HOME = Objects.requireNonNull(ctx.getExternalFilesDir(null)).toString();
+                    DIR_GAME_HOME = String.valueOf(ctx.getExternalFilesDir(null));
                 }else{
                     DIR_GAME_HOME = new File(Environment.getExternalStorageDirectory(),"games/PojavGlowWorm").toString();
                 }
             } break;
             case "2":
-                DIR_GAME_HOME = Objects.requireNonNull(ctx.getExternalFilesDir(null)).toString();
+                DIR_GAME_HOME = String.valueOf(ctx.getExternalFilesDir(null));
                 break;
             case "3":
                 DIR_GAME_HOME = new File(Environment.getExternalStorageDirectory(),"games/PojavGlowWorm").toString();
