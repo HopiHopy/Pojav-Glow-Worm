@@ -131,14 +131,14 @@ public final class Tools {
     private static LanguagesList sCompatibleLanguages;
     private static RenderersList sCompatibleRenderers;
 
-
+/*
     private static File getPojavStorageRoot(Context ctx) {
         if(SDK_INT >= 29) {
             return ctx.getExternalFilesDir(null);
         }else{
             return new File(Environment.getExternalStorageDirectory(),"games/PojavGlowWorm");
         }
-        /* File CLstoragelL = ctx.getExternalFilesDir(null);
+        File CLstoragelL = ctx.getExternalFilesDir(null);
         switch (LOCAL_CSTL) {
             case "1":{
                 if(SDK_INT >= 29) {
@@ -155,19 +155,21 @@ public final class Tools {
                 break;
         }
         return CLstoragelL;
-        */
     }
+*/
 
     /**
      * Checks if the Pojav's storage root is accessible and read-writable
      * @param context context to get the storage root if it's not set yet
      * @return true if storage is fine, false if storage is not accessible
      */
+/*
     public static boolean checkStorageRoot(Context context) {
         File externalFilesDir = DIR_GAME_HOME  == null ? Tools.getPojavStorageRoot(context) : new File(DIR_GAME_HOME);
         //externalFilesDir == null when the storage is not mounted if it was obtained with the context call
         return externalFilesDir != null && Environment.getExternalStorageState(externalFilesDir).equals(Environment.MEDIA_MOUNTED);
     }
+*/
 
     /**
      * Since some constant requires the use of the Context object
@@ -175,10 +177,25 @@ public final class Tools {
      * Any value (in)directly dependant on DIR_DATA should be set only here.
      */
     public static void initContextConstants(Context ctx){
+        switch (LOCAL_CSTL) {
+            case "1":{
+                if(SDK_INT >= 29) {
+                    DIR_GAME_HOME = Objects.requireNonNull(ctx.getExternalFilesDir(null)).toString();
+                }else{
+                    DIR_GAME_HOME = new File(Environment.getExternalStorageDirectory(),"games/PojavGlowWorm").toString();
+                }
+            } break;
+            case "2":
+                DIR_GAME_HOME = Objects.requireNonNull(ctx.getExternalFilesDir(null)).toString();
+                break;
+            case "3":
+                DIR_GAME_HOME = new File(Environment.getExternalStorageDirectory(),"games/PojavGlowWorm").toString();
+                break;
+        }
         DIR_CACHE = ctx.getCacheDir();
         DIR_DATA = ctx.getFilesDir().getParent();
         MULTIRT_HOME = DIR_DATA+"/runtimes";
-        DIR_GAME_HOME = getPojavStorageRoot(ctx).getAbsolutePath();
+        // DIR_GAME_HOME = getPojavStorageRoot(ctx).getAbsolutePath();
         DIR_GAME_NEW = DIR_GAME_HOME + "/.minecraft";
         DIR_HOME_VERSION = DIR_GAME_NEW + "/versions";
         DIR_HOME_LIBRARY = DIR_GAME_NEW + "/libraries";
